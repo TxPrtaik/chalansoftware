@@ -1,0 +1,173 @@
+ <!-- Main Content -->
+  <%-include("header.ejs")%>
+        <div class="container-fluid p-4">
+            <!-- Page Heading -->
+            <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+                <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                    <i class="bi bi-download me-1"></i> Generate Report
+                </a>
+            </div>
+
+            <!-- Stats Row -->
+            <div class="row">
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card card-dashboard border-left-primary h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1 stats-title">
+                                        Total Revenue</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800 stats-number">$54,236</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="bi bi-currency-dollar card-icon text-primary"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card card-dashboard border-left-success h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1 stats-title">
+                                        Total Orders</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800 stats-number">1,258</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="bi bi-cart-check card-icon text-success"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card card-dashboard border-left-info h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1 stats-title">
+                                        New Customers</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800 stats-number">324</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="bi bi-people card-icon text-info"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card card-dashboard border-left-warning h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1 stats-title">
+                                        Pending Requests</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800 stats-number">18</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="bi bi-chat-left-text card-icon text-warning"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Row -->
+            <div class="row">
+                <!-- Area Chart -->
+                <div class="col-xl-8 col-lg-7">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">Revenue Overview</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-area" style="height: 320px;">
+                                <img src="https://placeholder-image-service.onrender.com/image/700x320?prompt=Revenue%20line%20chart%20showing%20monthly%20growth%20with%20upward%20trend&id=86107e23-9ae8-467b-b551-f2f9396ee07f" alt="Revenue line chart showing monthly growth with upward trend" class="img-fluid">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pie Chart -->
+                <div class="col-xl-4 col-lg-5">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">Traffic Sources</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-pie" style="height: 320px;">
+                                <img src="https://placeholder-image-service.onrender.com/image/300x300?prompt=Pie%20chart%20showing%20traffic%20sources%20distribution%20with%20different%20colored%20sections&id=7ee65bde-9a90-4b4e-a9d5-e8c7a8089a28" alt="Pie chart showing traffic sources distribution with different colored sections" class="img-fluid">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Recent Activity</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>User</th>
+                                            <th>Activity</th>
+                                            <th>Timestamp</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>John Doe</td>
+                                            <td>Placed a new order (#1234)</td>
+                                            <td>10 mins ago</td>
+                                            <td><span class="badge bg-success">Completed</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Jane Smith</td>
+                                            <td>Updated product information</td>
+                                            <td>30 mins ago</td>
+                                            <td><span class="badge bg-info">Pending</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Robert Johnson</td>
+                                            <td>Created a new support ticket</td>
+                                            <td>1 hour ago</td>
+                                            <td><span class="badge bg-warning">In Progress</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Emily Davis</td>
+                                            <td>Processed a return request</td>
+                                            <td>2 hours ago</td>
+                                            <td><span class="badge bg-danger">Rejected</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Michael Wilson</td>
+                                            <td>Added new product category</td>
+                                            <td>3 hours ago</td>
+                                            <td><span class="badge bg-success">Completed</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <%-include("footer.ejs")%>
+
+  

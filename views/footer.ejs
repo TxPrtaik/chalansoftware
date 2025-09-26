@@ -1,0 +1,36 @@
+  <!-- Bootstrap & jQuery JS -->
+</div>  
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        $(document).ready(function() {
+            // Toggle sidebar
+            $('#sidebarToggle').click(function() {
+                $('#sidebar').toggleClass('mobile-show');
+                $('#overlay').toggleClass('active');
+                $('body').toggleClass('sidebar-toggled');
+            });
+            
+            // Close sidebar when clicking on overlay
+            $('#overlay').click(function() {
+                $(this).removeClass('active');
+                $('#sidebar').removeClass('mobile-show');
+            });
+            
+            // Automatically close the sidebar on larger screens if needed
+            function checkWidth() {
+                if ($(window).width() > 768) {
+                    $('#overlay').removeClass('active');
+                    $('#sidebar').removeClass('mobile-show');
+                }
+            }
+            
+            // On window resize
+            $(window).resize(function() {
+                checkWidth();
+            });
+        });
+    </script>
+</body>
+</html>
