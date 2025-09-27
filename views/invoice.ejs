@@ -37,31 +37,81 @@
   </style>
 </head>
 <body>
+<%
+function numberToWords(num) {
+  // Remove commas if input is string
+  if (typeof num === "string") {
+    num = num.replace(/,/g, '');
+  }
+  num = Number(num);
+  if (isNaN(num)) return "Invalid number";
 
+  const ones = ["", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
+    "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", 
+    "sixteen", "seventeen", "eighteen", "nineteen"];
+  const tens = ["", "", "twenty", "thirty", "forty", "fifty", 
+    "sixty", "seventy", "eighty", "ninety"];
+
+  function helper(n) {
+    let str = "";
+    if (n < 20) str = ones[n];
+    else if (n < 100) str = tens[Math.floor(n / 10)] + (n % 10 !== 0 ? " " + ones[n % 10] : "");
+    else if (n < 1000) str = ones[Math.floor(n / 100)] + " hundred" + (n % 100 !== 0 ? " " + helper(n % 100) : "");
+    return str;
+  }
+
+  function convertIntegerPart(n) {
+    let result = "";
+    const crore = Math.floor(n / 10000000);
+    const lakh = Math.floor((n % 10000000) / 100000);
+    const thousand = Math.floor((n % 100000) / 1000);
+    const hundred = Math.floor(n % 1000);
+
+    if (crore) result += helper(crore) + " crore ";
+    if (lakh) result += helper(lakh) + " lakh ";
+    if (thousand) result += helper(thousand) + " thousand ";
+    if (hundred) result += helper(hundred);
+
+    return result.trim();
+  }
+
+  const integerPart = Math.floor(num);
+  const decimalPart = Math.round((num - integerPart) * 100); // get 2 decimal digits
+
+  let words = convertIntegerPart(integerPart) + " rupees";
+  if (decimalPart > 0) {
+    words += " and " + convertIntegerPart(decimalPart) + " paise";
+  }
+
+  return words;
+}
+
+
+%>
 <div class="invoice-box">
   <!-- Header -->
   <div class="row invoice-header">
     <div class="col-8">
-      <h2 class="invoice-title">हेमंत कॉर्पोरेशन</h2>
-      <p class="mb-0">टेके वाडा, म.पो. अकुर्ड - 413309 ता.माळशिरस, जि. सोलापूर</p>
-      <p class="mb-0">Mob: 7028282304, GST NO: 27ABXPT6868K1Z6</p>
+      <img src="/Logo.png" alt="logo"  height="110" width="150" /><br>
+      गट क्र. १२७, पंतजलि पार्क, नेवासा फाटा रोड, एस.आर. मॅजिस्ट्रेट्स कोर्ट, कोर्ट मागे, नेवासा, अहिल्यानगर, अहमदनगर, महाराष्ट्र – ४१४६०३
+      
     </div>
     <div class="col-4 text-end">
       <h6>वाहतूक चलन</h6>
-      <p class="mb-0">दिनांक: <strong>17.08.2025</strong></p>
-      <p class="mb-0">बिल नं: <strong>854</strong></p>
+      <p class="mb-0">दिनांक: <strong><%-det.invoiceDate%></strong></p>
+      <p class="mb-0">बिल नं: <strong>C-<%-new Date().getFullYear()+"-"+det.id%></strong></p>
     </div>
   </div>
 
   <!-- Receiver Info -->
   <div class="row mb-3">
     <div class="col-md-6">
-      <p><strong>मेसेर्स:</strong> Nath Sagar Trading Nevasa</p>
-      <p><strong>Receiver Name:</strong> ___________</p>
-      <p><strong>Receiver Mobile:</strong> ___________</p>
+      <p><strong>मेसेर्स:</strong> <%-det.receiverName%></p>
+      
+      <p><strong>Receiver Mobile:</strong> <%-det.receiverMobile%></p>
     </div>
     <div class="col-md-6 text-md-end">
-      <p><strong>गाडी नं:</strong> MH45 AF 2547</p>
+      <p><strong>गाडी नं:</strong> <%-det.vehicleNo%></p>
     </div>
   </div>
 
@@ -71,15 +121,25 @@
       <tr>
         <th>Sr. No</th>
         <th>मालाचा तपशील</th>
+        
         <th>युनिट्स</th>
+        <th>दर</th>
+        <th>रक्कम</th>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>1</td>
-        <td>Whey Powder Amul (600-130)</td>
-        <td>65 Bag</td>
+      <%for(let i=0;i<pro.length;i++){%>
+        
+        <tr>
+        <td><%-i+1%></td>
+        <td><%-pro[i].product%></td>
+        <td><%-pro[i].qty%></td>
+        <td>&#8377; <%-pro[i].rate%></td>
+        <td>&#8377; <%-pro[i].amount%></td>
       </tr>
+        
+        <%}%>
+      
     </tbody>
   </table>
 
@@ -88,28 +148,15 @@
     <div class="col-md-12">
       <table class="table table-bordered">
         <tbody>
-          <tr>
-            <th>Tax Amount (in words)</th>
-            <td>Indian Rupees Thirteen Thousand Six Hundred Nineteen Only</td>
+            <tr>
+            <th>Total Amount </th>
+            <td>&#8377; <%-det.total%> /-</td>
           </tr>
           <tr>
-            <th>Company’s PAN</th>
-            <td>ABXPT6868K</td>
+            <th>Total Amount (in words)</th>
+            <td style="text-transform: capitalize;"><%-numberToWords(det.total)%> only</td>
           </tr>
-          <tr>
-            <th>Bank Details</th>
-            <td>
-              <strong>Bank Name:</strong> Bank of India <br>
-              <strong>Account No:</strong> 1234567890 <br>
-              <strong>Branch & IFSC:</strong> Solapur Branch, BKID0001234
-            </td>
-          </tr>
-          <tr>
-            <th>Declaration</th>
-            <td>
-              I/We hereby certify that my/our registration certificate under the Maharashtra Value Added Tax Act 2002 is valid, and the transaction covered by this invoice has been effected by us.
-            </td>
-          </tr>
+         
         </tbody>
       </table>
     </div>
@@ -118,11 +165,13 @@
   <!-- Signature -->
   <div class="row mt-4">
     <div class="col-6">
-      <p><strong>Receiver’s Signature</strong></p>
+      <p><strong>नाथसागर ट्रेडिंग, नेवासा</strong></p>
     </div>
     <div class="col-6 text-end">
-      <p><strong>For Hemant Corporation</strong></p>
-      <p>Authorized Signatory</p>
+     
+       <p><strong> स्वीकर्त्याची स्वाक्षरी</strong></p>
+      
+     
     </div>
   </div>
 
@@ -131,6 +180,8 @@
     <button class="btn btn-primary" onclick="window.print()">🖨️ Print Invoice</button>
   </div>
 </div>
-
+<script>
+  
+</script>
 </body>
 </html>

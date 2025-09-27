@@ -1,182 +1,171 @@
+<%-include("header.ejs")%>
+<style>
+  :root{--bg:#f6f8fb;--card:#fff;--muted:#6b7280;--accent:#1f2937}
+  body{font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; background:var(--bg); padding:28px; color:var(--accent)}
+  .container{max-width:900px;margin:0 auto}
+  .card{background:var(--card);border-radius:12px;box-shadow:0 6px 18px rgba(15,23,42,0.08);padding:20px}
+  h1{font-size:20px;margin:0 0 12px}
+  .meta{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+  .meta div{background:#f3f4f6;padding:8px 12px;border-radius:8px;font-size:13px;color:var(--muted)}
+  table{width:100%;border-collapse:collapse;margin-top:8px}
+  thead th{font-size:13px;text-align:left;padding:10px 8px;border-bottom:1px solid #e6e9ee;color:var(--muted)}
+  tbody td{padding:10px 8px;border-bottom:1px solid #f1f3f6}
+  input[type="number"], input[type="text"], input[type="date"]{padding:6px;border-radius:6px;border:1px solid #d1d5db}
+  input[type="number"]{width:80px}
+  .right{text-align:right}
+  .summary{margin-top:14px;display:flex;justify-content:flex-end}
+  .summary .box{width:320px;background:#fafafa;border:1px solid #eef2f7;padding:12px;border-radius:10px}
+  .summary-row{display:flex;justify-content:space-between;padding:6px 0;font-size:14px}
+  .total{font-weight:700;font-size:18px;padding-top:8px;border-top:1px dashed #e6e9ee;margin-top:6px}
+  .small{font-size:12px;color:var(--muted)}
+  .controls{display:flex;gap:8px;align-items:center;margin-top:12px;flex-wrap:wrap}
+  .btn{padding:6px 10px;border-radius:6px;border:0;background:#111827;color:#fff;cursor:pointer;font-size:13px}
+  .btn-danger{background:#dc2626}
+  @media (max-width:640px){.summary{justify-content:stretch}.summary .box{width:100%}}
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
+<div class="container mt-5">
 
- <%-include("header.ejs")%>
-  <style>
-    :root{--bg:#f6f8fb;--card:#fff;--muted:#6b7280;--accent:#1f2937}
-    body{font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; background:var(--bg); padding:28px; color:var(--accent)}
-    .container{max-width:900px;margin:0 auto}
-    .card{background:var(--card);border-radius:12px;box-shadow:0 6px 18px rgba(15,23,42,0.08);padding:20px}
-    h1{font-size:20px;margin:0 0 12px}
-    .meta{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px}
-    .meta div{background:#f3f4f6;padding:8px 12px;border-radius:8px;font-size:13px;color:var(--muted)}
-    table{width:100%;border-collapse:collapse;margin-top:8px}
-    thead th{font-size:13px;text-align:left;padding:10px 8px;border-bottom:1px solid #e6e9ee;color:var(--muted)}
-    tbody td{padding:10px 8px;border-bottom:1px solid #f1f3f6}
-    input[type="number"], input[type="text"], input[type="date"]{padding:6px;border-radius:6px;border:1px solid #d1d5db}
-    input[type="number"]{width:80px}
-    .right{text-align:right}
-    .summary{margin-top:14px;display:flex;justify-content:flex-end}
-    .summary .box{width:320px;background:#fafafa;border:1px solid #eef2f7;padding:12px;border-radius:10px}
-    .summary-row{display:flex;justify-content:space-between;padding:6px 0;font-size:14px}
-    .total{font-weight:700;font-size:18px;padding-top:8px;border-top:1px dashed #e6e9ee;margin-top:6px}
-    .small{font-size:12px;color:var(--muted)}
-    .controls{display:flex;gap:8px;align-items:center;margin-top:12px;flex-wrap:wrap}
-    .btn{padding:8px 12px;border-radius:8px;border:0;background:#111827;color:#fff;cursor:pointer}
-    @media (max-width:640px){.summary{justify-content:stretch}.summary .box{width:100%}}
-  </style>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-
-  <div class="container">
-    <div class="card">
-      <h1>Invoice Preview</h1>
-      <div class="meta">
-        <div>Invoice #: <strong>INV-2025-001</strong></div>
-        <div>Date: <input type="date" id="invoiceDate" value="2025-09-26"></div>
-        <div>Vehicle No: <input type="text" id="vehicleNo" placeholder="Enter vehicle no"></div>
-        <div>Receiver Name: <input type="text" id="receiverName" placeholder="Enter receiver name"></div>
-        <div>Mobile: <input type="text" id="receiverMobile" placeholder="Enter mobile number"></div>
-        <div class="small">Tax: CGST + SGST</div>
-      </div>
-
-      <table>
-        <thead>
-          <tr>
-            <th style="width:48%">Item description</th>
-            <th>Qty</th>
-            <th>Rate (₹)</th>
-            <th class="right">Amount (₹)</th>
-          </tr>
-        </thead>
-        <tbody id="items">
-          <tr>
-            <td><input type="text" value="Monthly Gym Plan — Gold" style="width:95%" data-field="product"></td>
-            <td><input type="number" value="1" min="0" step="1" data-field="qty"></td>
-            <td><input type="number" value="1200" min="0" step="0.01" data-field="rate"></td>
-            <td class="right amount">1200.00</td>
-          </tr>
-          <tr>
-            <td><input type="text" value="Registration Fee" style="width:95%" data-field="product"></td>
-            <td><input type="number" value="1" min="0" step="1" data-field="qty"></td>
-            <td><input type="number" value="300" min="0" step="0.01" data-field="rate"></td>
-            <td class="right amount">300.00</td>
-          </tr>
-          <tr>
-            <td><input type="text" value="Protein Shake" style="width:95%" data-field="product"></td>
-            <td><input type="number" value="2" min="0" step="1" data-field="qty"></td>
-            <td><input type="number" value="150" min="0" step="0.01" data-field="rate"></td>
-            <td class="right amount">300.00</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <div class="controls">
-        <button class="btn" id="addProduct">Add Product</button>
-        <label class="small">CGST % <input type="number" id="cgstRate" value="9" step="0.01" style="width:70px;margin-left:8px"></label>
-        <label class="small">SGST % <input type="number" id="sgstRate" value="9" step="0.01" style="width:70px;margin-left:8px"></label>
-        <button class="btn" id="recalc">Recalculate</button>
-        <button class="btn" id="submitBtn">Submit</button>
-      </div>
-
-      <div class="summary">
-        <div class="box">
-          <div class="summary-row"><div class="small">Subtotal</div><div id="subtotal" class="right">₹ 0.00</div></div>
-          <div class="summary-row"><div class="small">CGST (<span id="cgstPct">9</span>%)</div><div id="cgstAmt" class="right">₹ 0.00</div></div>
-          <div class="summary-row"><div class="small">SGST (<span id="sgstPct">9</span>%)</div><div id="sgstAmt" class="right">₹ 0.00</div></div>
-          <div class="summary-row total"><div>Total</div><div id="total" class="right">₹ 0.00</div></div>
-        </div>
-      </div>
-
-      <p class="small" style="margin-top:10px">Tip: change quantities, rates, date, vehicle no, receiver details, or add new products. Then click <strong>Recalculate</strong> to update totals. This layout is responsive and suitable for embedding in admin panels or printable invoices.</p>
+  <div class="card">
+    <h1>Invoice Preview</h1>
+    <div class="meta">
+      
+      <div>Date: <input type="date" id="invoiceDate" value="2025-09-26"></div>
+      <div>Vehicle No: <input type="text" id="vehicleNo" placeholder="Enter vehicle no"></div>
+      <div>Receiver Name: <input type="text" id="receiverName" placeholder="Enter receiver name"></div>
+      <div>Mobile: <input type="text" id="receiverMobile" placeholder="Enter mobile number"></div>
+      <div class="small">Tax: CGST + SGST</div>
     </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th style="width:48%">Item description</th>
+          <th>Qty</th>
+          <th>Rate (₹)</th>
+          <th class="right">Amount (₹)</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="items">
+       
+      </tbody>
+    </table>
+
+    <div class="controls">
+      <button class="btn" id="addProduct">Add Product</button>
+      <label class="small">CGST % <input type="number" id="cgstRate" value="0" step="0.01" style="width:70px;margin-left:8px"></label>
+      <label class="small">SGST % <input type="number" id="sgstRate" value="0" step="0.01" style="width:70px;margin-left:8px"></label>
+      <button class="btn" id="recalc">Recalculate</button>
+      <button class="btn" id="submitBtn">Submit</button>
+    </div>
+
+    <div class="summary">
+      <div class="box">
+        <div class="summary-row"><div class="small">Subtotal</div><div id="subtotal" class="right">₹ 0.00</div></div>
+        <div class="summary-row"><div class="small">CGST (<span id="cgstPct">9</span>%)</div><div id="cgstAmt" class="right">₹ 0.00</div></div>
+        <div class="summary-row"><div class="small">SGST (<span id="sgstPct">9</span>%)</div><div id="sgstAmt" class="right">₹ 0.00</div></div>
+        <div class="summary-row total"><div>Total</div><div id="total" class="right">₹ 0.00</div></div>
+      </div>
+    </div>
+
+    <p class="small" style="margin-top:10px">Tip: change quantities, rates, date, vehicle no, receiver details, or add/remove products. Then click <strong>Recalculate</strong> to update totals. This layout is responsive and suitable for embedding in admin panels or printable invoices.</p>
   </div>
+</div>
 
-  <script>
-    function fmt(n){return Number(n).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2})}
-    function recalc(){
-      const tbody = document.getElementById('items');
-      let subtotal = 0;
-      Array.from(tbody.rows).forEach(row =>{
-        const qty = Number(row.querySelector('input[data-field="qty"]').value) || 0;
-        const rate = Number(row.querySelector('input[data-field="rate"]').value) || 0;
-        const amt = qty * rate;
-        row.querySelector('.amount').textContent = fmt(amt);
-        subtotal += amt;
-      });
-      const cgstRate = Number(document.getElementById('cgstRate').value) || 0;
-      const sgstRate = Number(document.getElementById('sgstRate').value) || 0;
-      const cgstAmt = subtotal * (cgstRate/100);
-      const sgstAmt = subtotal * (sgstRate/100);
-      const total = subtotal + cgstAmt + sgstAmt;
+<script>
+  function fmt(n){return Number(n).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2})}
+  function recalc(){
+    const tbody = document.getElementById('items');
+    let subtotal = 0;
+    Array.from(tbody.rows).forEach(row =>{
+      const qty = Number(row.querySelector('input[data-field="qty"]').value) || 0;
+      const rate = Number(row.querySelector('input[data-field="rate"]').value) || 0;
+      const amt = qty * rate;
+      row.querySelector('.amount').textContent = fmt(amt);
+      subtotal += amt;
+    });
+    const cgstRate = Number(document.getElementById('cgstRate').value) || 0;
+    const sgstRate = Number(document.getElementById('sgstRate').value) || 0;
+    const cgstAmt = subtotal * (cgstRate/100);
+    const sgstAmt = subtotal * (sgstRate/100);
+    const total = subtotal + cgstAmt + sgstAmt;
 
-      document.getElementById('subtotal').textContent = '₹ ' + fmt(subtotal);
-      document.getElementById('cgstPct').textContent = cgstRate;
-      document.getElementById('sgstPct').textContent = sgstRate;
-      document.getElementById('cgstAmt').textContent = '₹ ' + fmt(cgstAmt);
-      document.getElementById('sgstAmt').textContent = '₹ ' + fmt(sgstAmt);
-      document.getElementById('total').textContent = '₹ ' + fmt(total);
+    document.getElementById('subtotal').textContent = '₹ ' + fmt(subtotal);
+    document.getElementById('cgstPct').textContent = cgstRate;
+    document.getElementById('sgstPct').textContent = sgstRate;
+    document.getElementById('cgstAmt').textContent = '₹ ' + fmt(cgstAmt);
+    document.getElementById('sgstAmt').textContent = '₹ ' + fmt(sgstAmt);
+    document.getElementById('total').textContent = '₹ ' + fmt(total);
+  }
+
+  document.getElementById('recalc').addEventListener('click', recalc);
+  document.getElementById('items').addEventListener('input', () => { clearTimeout(window._t); window._t = setTimeout(recalc,200); });
+
+  // Add product with remove button
+  document.getElementById('addProduct').addEventListener('click', () => {
+    const tbody = document.getElementById('items');
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><input type="text" placeholder="Product name" style="width:95%" data-field="product"></td>
+      <td><input type="number" value="1" min="0" step="1" data-field="qty"></td>
+      <td><input type="number" value="0" min="0" step="0.01" data-field="rate"></td>
+      <td class="right amount">0.00</td>
+      <td><button class="btn btn-danger removeBtn">Remove</button></td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  // Remove product button
+  document.getElementById('items').addEventListener('click', (e) => {
+    if (e.target.classList.contains('removeBtn')) {
+      e.target.closest('tr').remove();
+      recalc();
     }
+  });
 
-    document.getElementById('recalc').addEventListener('click', recalc);
-    document.getElementById('items').addEventListener('input', () => { clearTimeout(window._t); window._t = setTimeout(recalc,200); });
+  document.getElementById('submitBtn').addEventListener('click', () => {
+    const invoiceDate = document.getElementById('invoiceDate').value;
+    const vehicleNo = document.getElementById('vehicleNo').value;
+    const receiverName = document.getElementById('receiverName').value;
+    const receiverMobile = document.getElementById('receiverMobile').value;
+    const cgstRate = document.getElementById('cgstRate').value;
+    const sgstRate = document.getElementById('sgstRate').value;
+    const subtotal = document.getElementById('subtotal').textContent.replace('₹','').trim();
+    const cgstAmt = document.getElementById('cgstAmt').textContent.replace('₹','').trim();
+    const sgstAmt = document.getElementById('sgstAmt').textContent.replace('₹','').trim();
+    const total = document.getElementById('total').textContent.replace('₹','').trim();
 
-    document.getElementById('addProduct').addEventListener('click', () => {
-      const tbody = document.getElementById('items');
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td><input type="text" placeholder="Product name" style="width:95%" data-field="product"></td>
-        <td><input type="number" value="1" min="0" step="1" data-field="qty"></td>
-        <td><input type="number" value="0" min="0" step="0.01" data-field="rate"></td>
-        <td class="right amount">0.00</td>
-      `;
-      tbody.appendChild(tr);
-    });
-
-    document.getElementById('submitBtn').addEventListener('click', () => {
-      const invoiceDate = document.getElementById('invoiceDate').value;
-      const vehicleNo = document.getElementById('vehicleNo').value;
-      const receiverName = document.getElementById('receiverName').value;
-      const receiverMobile = document.getElementById('receiverMobile').value;
-      const cgstRate = document.getElementById('cgstRate').value;
-      const sgstRate = document.getElementById('sgstRate').value;
-      const subtotal = document.getElementById('subtotal').textContent.replace('₹','').trim();
-      const cgstAmt = document.getElementById('cgstAmt').textContent.replace('₹','').trim();
-      const sgstAmt = document.getElementById('sgstAmt').textContent.replace('₹','').trim();
-      const total = document.getElementById('total').textContent.replace('₹','').trim();
-
-      let products = [];
-      document.querySelectorAll('#items tr').forEach(row => {
-        products.push({
-          product: row.querySelector('input[data-field="product"]').value,
-          qty: row.querySelector('input[data-field="qty"]').value,
-          rate: row.querySelector('input[data-field="rate"]').value,
-          amount: row.querySelector('.amount').textContent
-        });
+    let products = [];
+    document.querySelectorAll('#items tr').forEach(row => {
+      products.push({
+        product: row.querySelector('input[data-field="product"]').value,
+        qty: row.querySelector('input[data-field="qty"]').value,
+        rate: row.querySelector('input[data-field="rate"]').value,
+        amount: row.querySelector('.amount').textContent
       });
-
-       $.ajax({
-         url: '/save-invoice',
-         method: 'POST',
-         contentType: 'application/json',
-         data: JSON.stringify({
-           invoiceDate, vehicleNo, receiverName, receiverMobile,
-           cgstRate, sgstRate, subtotal, cgstAmt, sgstAmt, total,
-           products
-         })
-       }).done(res => {
-         alert('Invoice saved successfully!');
-         location.href="/invoice"
-       }).fail(err => {
-         alert('Error saving invoice');
-         console.error(err);
-       });
-let d=JSON.stringify({
-           invoiceDate, vehicleNo, receiverName, receiverMobile,
-           cgstRate, sgstRate, subtotal, cgstAmt, sgstAmt, total,
-       products
-     })
-console.log(d)
     });
 
-    recalc();
-  </script>
+     $.ajax({
+       url: '/save-invoice',
+       method: 'POST',
+       contentType: 'application/json',
+       data: JSON.stringify({
+         invoiceDate, vehicleNo, receiverName, receiverMobile,
+         cgstRate, sgstRate, subtotal, cgstAmt, sgstAmt, total,
+         products
+       })
+     }).done(res => {
+       alert('Invoice saved successfully!');
+
+       location.href="/invoice/"+res.id
+     }).fail(err => {
+       alert('Error saving invoice');
+       console.error(err);
+     });
+  });
+
+  recalc();
+</script>
 <%-include("footer.ejs")%>
