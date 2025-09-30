@@ -1,7 +1,7 @@
 <%-include("header.ejs")%>
 <style>
   :root{--bg:#f6f8fb;--card:#fff;--muted:#6b7280;--accent:#1f2937}
-  body{font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; background:var(--bg); padding:28px; color:var(--accent)}
+  body{font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; background:var(--bg);  color:var(--accent)}
   .container{max-width:900px;margin:0 auto}
   .card{background:var(--card);border-radius:12px;box-shadow:0 6px 18px rgba(15,23,42,0.08);padding:20px}
   h1{font-size:20px;margin:0 0 12px}
@@ -19,15 +19,15 @@
   .total{font-weight:700;font-size:18px;padding-top:8px;border-top:1px dashed #e6e9ee;margin-top:6px}
   .small{font-size:12px;color:var(--muted)}
   .controls{display:flex;gap:8px;align-items:center;margin-top:12px;flex-wrap:wrap}
-  .btn{padding:6px 10px;border-radius:6px;border:0;background:#111827;color:#fff;cursor:pointer;font-size:13px}
+  .btn{padding:6px 10px;border-radius:6px;border:0;cursor:pointer;font-size:13px}
   .btn-danger{background:#dc2626}
   @media (max-width:640px){.summary{justify-content:stretch}.summary .box{width:100%}}
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
-<div class="container mt-5">
+<div class="container mt-5 mb-0" >
 
-  <div class="card">
+  <div class="card mb-0" style="overflow-x: scroll;">
     <h1>Invoice Preview</h1>
     <div class="meta">
       
@@ -38,7 +38,7 @@
       <div class="small">Tax: CGST + SGST</div>
     </div>
 
-    <table>
+    <table style="overflow-x: scroll;">
       <thead>
         <tr>
           <th style="width:48%">Item description</th>
@@ -48,17 +48,18 @@
           <th>Action</th>
         </tr>
       </thead>
-      <tbody id="items">
+      <tbody id="items" >
        
       </tbody>
     </table>
 
     <div class="controls">
-      <button class="btn" id="addProduct">Add Product</button>
+      
       <label class="small">CGST % <input type="number" id="cgstRate" value="0" step="0.01" style="width:70px;margin-left:8px"></label>
       <label class="small">SGST % <input type="number" id="sgstRate" value="0" step="0.01" style="width:70px;margin-left:8px"></label>
-      <button class="btn" id="recalc">Recalculate</button>
-      <button class="btn" id="submitBtn">Submit</button>
+      <button class="btn btn-primary" id="addProduct">Add Product</button>
+      <button class="btn btn-dark" id="recalc">Recalculate</button>
+      <button class="btn btn-success" id="submitBtn">Submit</button>
     </div>
 
     <div class="summary">

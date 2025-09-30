@@ -3,8 +3,8 @@
 <style>
     body {
         font-family: Arial, sans-serif;
-        margin: 20px;
-        background-color: #f4f4f4;
+       
+       
     }
     .container {
         max-width: 1000px;
@@ -100,8 +100,8 @@
     }
 </style>
 
-<div class="container-fluid p-4">
-    <div class="container">
+<div class="container-fluid pt-5">
+    <div class="container-fluid" style="overflow-x: scroll;">
         <h3 class="mb-4">History</h3>
         
         <!-- Search Filters -->
@@ -118,7 +118,7 @@
         </div>
 
         <!-- Data Table -->
-        <table id="dataTable">
+        <table id="dataTable" width="100%">
             <thead>
                 <tr>
                     <th>Chhalan ID</th>
@@ -132,7 +132,7 @@
             <tbody>
                 <% for(let i of his) { %>
                 <tr data-id="<%= i.id %>">
-                    <td>C-<%- new Date().getFullYear() + "-" + i.id %></td>
+                    <td style="width: 30%;" >C-<%- new Date().getFullYear() + "-" + i.id %></td>
                     <td><%= i.receiverName %></td>
                     <td><%= i.receiverMobile %></td>
                     <td>&#8377; <%= i.total %></td>

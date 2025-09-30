@@ -175,6 +175,12 @@
                 opacity: 1;
             }
         }
+        @media (max-width:610px) {
+             .cr{
+                text-align: center;
+                font-size: 13px;
+             }
+        }
     </style>
 </head>
 <body>
@@ -195,7 +201,7 @@
     <div class="overlay" id="overlay"></div>
 
     <!-- Sidebar -->
-    <div id="sidebar" class="bg-dark">
+    <div id="sidebar"  class="bg-dark">
        
         
         <ul class="sidebar-menu mt-4">
@@ -214,8 +220,16 @@
                    
                 </ul>
             </li>
-         
+             <li>
+                <a href="/logout" >
+                   <i class="bi bi-box-arrow-left nav-icon"></i> Logout
+                </a>
+            </li> 
         </ul>
+        <div class="p-1" style="position: absolute;font-size: 10px; bottom: 5px;">
+© 2025 Nath Sagar Trading Company, Inc. All rights reserved.
+        </div>
+        
     </div>
-  <div id="content">
+  <div id="content" style="position: relative;">
    
